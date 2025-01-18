@@ -1,0 +1,71 @@
+version: '3.9'
+
+services:
+  db_service:
+    build:
+      context: ./db_service
+    ports:
+      - "3309:3306"  # Exposing MySQL port, not 5002
+    networks:
+      - app-network
+    environment:
+      DB_HOST: db_service  # Use the service name to connect to the MySQL container
+      DB_USER: root
+      DB_PASSWORD:  Your DB Password
+      DB_NAME: scan_results
+      MYSQL_ROOT_PASSWORD: Your Root Password
+      AWS_ACCESS_KEY_ID: Your Access key_ID
+      AWS_SECRET_ACCESS_KEY: Your Access key
+      AWS_REGION: Your region
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3306"]  # Health check for MySQL
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  scan_service:
+    build:
+      context: ./scan_service
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+    environment:
+      DB_HOST: db_service  # Use the service name instead of localhost
+      DB_USER: root
+      DB_PASSWORD: Your DB Password
+      DB_NAME: scan_results
+      MYSQL_ROOT_PASSWORD: Your Root Password
+      AWS_ACCESS_KEY_ID: Your Access key_ID
+      AWS_SECRET_ACCESS_KEY: Your Access key
+      AWS_REGION: Your Region
+    depends_on:
+      - db_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  ui_service:
+    build:
+      context: ./ui_service
+    ports:
+      - "5000:5000"
+    depends_on:
+      - scan_service
+    networks:
+      - app-network
+    environment:
+      AWS_ACCESS_KEY_ID: Your Access key_ID
+      AWS_SECRET_ACCESS_KEY: Your Access key
+      AWS_REGION: Your Region
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  app-network:
+    driver: bridge
