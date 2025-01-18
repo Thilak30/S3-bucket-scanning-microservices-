@@ -5,8 +5,8 @@ from aws_services.scanning import scan_s3_file
 app = Flask(__name__)
 
 # Buckets and files to scan
-buckets = ['bucket.0.1', 'bucket.0.2', 'bucket.0.3']
-files = ['All data.txt.txt']
+buckets = ['bucket1', 'bucket2', 'bucket3']
+files = ['All data.txt']
 
 @app.route('/start_scan', methods=['GET'])
 def start_scan():
