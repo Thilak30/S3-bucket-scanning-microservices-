@@ -8,7 +8,7 @@ app = Flask(__name__)
 db_config = {
     "host": os.getenv("DB_HOST", "db_service"),  # Adjusted to your environment
     "user": os.getenv("DB_USER", "root"),
-    "password": os.getenv("DB_PASSWORD", "changeme"),
+    "password": os.getenv("DB_PASSWORD", "Your Root password"),
     "database": os.getenv("DB_NAME", "scan_results"),
     "port": int(os.getenv("DB_PORT", 3306))  # Add port with default 3306
 }
