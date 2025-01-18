@@ -7,9 +7,9 @@ def scan_s3_file(bucket_name, file_name):
     Scans a file in S3 for sensitive data patterns directly in AWS.
     """
     # Use environment variables for AWS credentials
-    aws_access_key_id = os.getenv('AKIA4WJPWKY7B24Z7DEQ')
-    aws_secret_access_key = os.getenv('IuvDH+WFbglPQyoEJsLdfH9Ry3TuPUdQ1Q67b7xV')
-    aws_region = os.getenv('ap-south-1')
+    aws_access_key_id = os.getenv('Your AWS Access key_id')
+    aws_secret_access_key = os.getenv('Your AWS Access key')
+    aws_region = os.getenv('Your Region')
 
     s3 = boto3.client(
         's3',
